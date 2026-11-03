@@ -1,0 +1,19 @@
+services:
+  finance:
+    build: .
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["finance-data:/app/data"]
+  fulfillment:
+    build: .
+    command: ["python","ecommerce-fulfillment-and-exception-portal-python/manage.py","runserver","0.0.0.0:8000"]
+    ports: ["127.0.0.1:8001:8000"]
+    volumes: ["fulfillment-data:/app/data"]
+  assessments:
+    build: .
+    command: ["python","-m","uvicorn","education-assessment-and-progress-api-python.app:app","--host","0.0.0.0","--port","8000"]
+    ports: ["127.0.0.1:8002:8000"]
+    volumes: ["assessment-data:/app/data"]
+volumes:
+  finance-data:
+  fulfillment-data:
+  assessment-data:

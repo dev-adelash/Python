@@ -1,0 +1,11 @@
+.git
+**/node_modules
+**/.venv
+**/__pycache__
+**/bin
+**/obj
+**/target
+**/.next
+**/dist
+**/*.db
+**/data
