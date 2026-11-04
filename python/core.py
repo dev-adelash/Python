@@ -103,7 +103,7 @@ class Engine:
             return {'delivered':rows}
         if action=='callback':
             signature=p.get('signature',''); body={k:v for k,v in p.items() if k!='signature'}
-            if not isinstance(signature,str) or not hmac.compare_digest(signature,self.signature(body)): raise Problem(401,'Invalid callback signature')
+            if not isinstance(signature,str) or not signature.isascii() or not hmac.compare_digest(signature,self.signature(body)): raise Problem(401,'Invalid callback signature')
             id=self.text(body,'id'); invoice=self.text(body,'invoice'); amount=self.integer(body,'amount',1)
             encoded=json.dumps(body,sort_keys=True)
             old=self.db.execute('SELECT * FROM events WHERE id=?',(id,)).fetchone()
