@@ -1,5 +1,5 @@
 """Transactional local application workflows. Money is always integer cents."""
-import hashlib, hmac, json, sqlite3, threading, time
+import hashlib, hmac, json, math, sqlite3, threading, time
 from contextlib import contextmanager
 
 class Problem(Exception):
@@ -135,7 +135,11 @@ class Engine:
             id=self.text(p,'id'); student=self.text(p,'student'); answers=p.get('answers')
             if not isinstance(answers,list) or len(answers)!=3 or any(type(a) is not str for a in answers): raise Problem(422,'Exactly three answer strings are required')
             deadline=p.get('deadline')
-            if type(deadline) not in (int,float) or deadline<time.time(): raise Problem(422,'Submission deadline has passed or is invalid')
+            if (
+                type(deadline) not in (int,float)
+                or (type(deadline) is float and not math.isfinite(deadline))
+                or deadline<time.time()
+            ): raise Problem(422,'Submission deadline has passed or is invalid')
             if actor not in ['learner','instructor']: raise Problem(403,'Learner role required')
             score=sum(a.strip().lower()==b for a,b in zip(answers,['transaction','idempotency','audit']))
             try:self.db.execute('INSERT INTO grades VALUES(?,?,?,?,?,?)',(id,student,score,'','pending',0))
