@@ -49,4 +49,4 @@ Implemented: Python/FastAPI/Pydantic, Django/DRF, SQLite, standard-library HMAC/
 
 ## Portfolio
 
-[View this stack’s work](https://adelash.vercel.app/python) · [Email Adel Ash](mailto:adelash.work@gmail.com)
+[View this stack’s work](https://adelash.vercel.app/python) · [Email Adel Ash](mailto:tech.dev.workspace@gmail.com)
